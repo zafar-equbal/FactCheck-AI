@@ -27,3 +27,7 @@ frontend/.env.local
 .idea/
 .DS_Store
 Thumbs.db
+
+# Large news datasets (keep locally, don't upload to GitHub)
+backend/data/cleaned_news.csv
+backend/data/*.parquet

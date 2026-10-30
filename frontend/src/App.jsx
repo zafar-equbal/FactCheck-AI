@@ -23,10 +23,16 @@ export default function App(){
    <section className="grid"><div className="panel"><div className="panel-head"><div><small>01 / INPUT</small><h2>Analyze content</h2></div><span className="chip">● TEXT MODEL</span></div>
     {tab==='news'?<form onSubmit={analyze}><label htmlFor="news">NEWS TEXT OR CLAIM</label><textarea id="news" value={text} onChange={e=>setText(e.target.value)} minLength={20} maxLength={20000} placeholder="Paste a headline and article text to analyze… (minimum 20 characters)" required/><div className="count">{text.length.toLocaleString()} / 20,000 characters</div><button className="submit" disabled={loading||text.trim().length<20}>{loading?<><LoaderCircle className="spin"/>Analyzing…</>:<><Search/>Analyze news　↗</>}</button></form>:<div className="placeholder"><div className="placeholder-icon">{tab==='image'?<Image size={28}/>:<Video size={28}/>}</div><h3>{tab==='image'?'Image deepfake detection':'Video deepfake detection'}</h3><p>This module is planned for the next phase. Media preprocessing and model training still need to be implemented.</p><span>NOT IMPLEMENTED YET</span></div>}
     {error&&<div className="message error"><AlertTriangle/><div><b>Could not complete analysis</b><p>{error}</p></div></div>}
-    {result&&<div className="message result"><AlertTriangle/><div><small>MODEL PREDICTION</small><h3>{result.prediction.toUpperCase()}</h3><p>Model confidence: {(result.confidence*100).toFixed(1)}%</p><p>{result.disclaimer}</p></div></div>}
-   </div><div className="right"><div className="panel"><small>02 / SYSTEM STATUS</small><h2>Model readiness</h2>
-    <div className="status-row"><FileText/><div><b>News classifier</b><small>{health?.news_model_ready?'Saved model detected':'Waiting for training'}</small></div><span>{health?.news_model_ready?'READY':'SETUP'}</span></div>
-    <div className="status-row"><Image/><div><b>Image deepfake model</b><small>Model not connected</small></div><span>PLANNED</span></div>
+        {result&&<div className="message result"><AlertTriangle/><div><small>MODEL PREDICTION</small><h3>
+  {Number(result.prediction) === 0
+    ? "FAKE NEWS"
+    : Number(result.prediction) === 1
+    ? "REAL NEWS"
+    : "UNKNOWN"}
+</h3><p>Model confidence: {(result.confidence*100).toFixed(1)}%</p><p>{result.disclaimer}</p></div></div>}
+    </div><div className="right"><div className="panel"><small>02 / SYSTEM STATUS</small><h2>Model readiness</h2>
+        <div className="status-row"><FileText/><div><b>News classifier</b><small>{health?.news_model_ready?'Saved model detected':'Waiting for training'}</small></div><span>{health?.news_model_ready?'READY':'SETUP'}</span></div>
+        <div className="status-row"><Image/><div><b>Image deepfake model</b><small>Model not connected</small></div><span>PLANNED</span></div>
     <div className="status-row"><Video/><div><b>Video analysis</b><small>Frame pipeline not built</small></div><span>PLANNED</span></div>
    </div><div className="warning"><AlertTriangle/><div><b>AI is a signal, not a verdict.</b><p>Predictions can be wrong. Check original sources and trusted reporting before sharing important claims.</p></div></div>
    <div className="panel"><small>YOUR NEXT MILESTONE</small><h3>Build a reliable baseline</h3><p className="muted">Use a reputable labeled dataset and evaluate on held-out examples. Record precision, recall and F1-score.</p><div className="bar"><span style={{width:health?.news_model_ready?'38%':'12%'}}/></div></div></div></section>
