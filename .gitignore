@@ -1,4 +1,4 @@
-# Python virtual environment
+# Python virtual environments
 backend/.venv/
 backend/venv/
 
@@ -28,6 +28,14 @@ frontend/.env.local
 .DS_Store
 Thumbs.db
 
-# Large news datasets (keep locally, don't upload to GitHub)
-backend/data/cleaned_news.csv
+# Large datasets - keep locally
+backend/data/*.csv
 backend/data/*.parquet
+
+# Large DistilBERT model weights
+backend/models/factcheck_distilbert/model.safetensors
+backend/models/factcheck_distilbert/training_args.bin
+
+# Python generated files
+*.log
+*.pyc
